@@ -1,0 +1,132 @@
+/* Variables de Diseño */
+:root {
+    --travel-primary: #0061ff;
+    --travel-secondary: #60efff;
+    --travel-dark: #1e293b;
+    --travel-bg: #f8fafc;
+    --travel-card-bg: #ffffff;
+    --travel-accent: #f59e0b; /* Dorado para precios/estrellas */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+    --radius: 12px;
+}
+
+footer{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+body {
+    background-color: var(--travel-bg);
+    color: var(--travel-dark);
+    line-height: 1.6;
+}
+
+/* Navbar Moderna */
+.navbar {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--travel-primary) !important;
+}
+
+/* Tarjetas de Viaje (Cards) */
+.card {
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--travel-card-bg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Precios y Badges */
+.travel-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--travel-primary);
+}
+
+.travel-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--travel-primary);
+    backdrop-filter: blur(4px);
+}
+
+/* Botones */
+.btn-primary {
+    background: linear-gradient(135deg, var(--travel-primary), #004ecc);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    transition: opacity 0.3s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-outline-success {
+    border-radius: 8px;
+    border-width: 2px;
+}
+
+/* Formularios y Zonas de Carga */
+.form-control, .form-select {
+    border-radius: 8px;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(0, 97, 255, 0.1);
+    border-color: var(--travel-primary);
+}
+
+#drop-zone {
+    border: 2px dashed #cbd5e1 !important;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+#drop-zone:hover, #drop-zone.border-primary {
+    background-color: #f1f5f9;
+    border-color: var(--travel-primary) !important;
+}
+
+/* Animaciones suaves */
+.alert {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
