@@ -12,7 +12,6 @@
             <form action="{{ route('vacation.store') }}" method="POST" enctype="multipart/form-data" class="row g-4">
                 @csrf
 
-                {{-- Errores de Validación --}}
                 @if ($errors->any())
                     <div class="col-12">
                         <div class="alert alert-danger shadow-sm border-0">
@@ -118,7 +117,6 @@
         const preview = document.getElementById('preview');
         const dropText = document.getElementById('drop-text');
 
-        // Reutilizamos tu lógica pero con mejoras visuales en los textos
         inputFile.addEventListener('change', (event) => {
             handleFile(event.target.files[0]);
         });

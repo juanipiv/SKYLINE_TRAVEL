@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                {{-- SECCIÓN 2: MIS RESERVAS --}}
+                <!-- seccion para ver las reservas que tiene hechas un usuario -->
                 <div class="d-flex align-items-center mb-4">
                     <h3 class="fw-bold mb-0"><i class="fa-solid fa-suitcase-rolling text-primary me-2"></i>Mis próximos viajes</h3>
                 </div>
@@ -108,7 +108,6 @@
         </div>
     </div>
 
-    {{-- Formulario oculto para eliminar reserva --}}
     <form id="form-cancelar" action="" method="POST" class="d-none">
         @csrf
         @method('DELETE')

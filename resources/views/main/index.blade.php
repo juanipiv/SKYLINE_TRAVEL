@@ -24,13 +24,13 @@
 <div class="card border-0 shadow-sm mb-4 p-3 bg-white rounded-4">
     <form action="{{ $urlDestino }}" method="get" class="row g-3 align-items-end">
         
-        {{-- Buscador General --}}
+        <!-- buscador -->
         <div class="col-md-3">
             <label class="form-label small fw-bold text-muted">Búsqueda</label>
             <input type="search" name="q" class="form-control" placeholder="¿A dónde vamos?" value="{{ $q }}">
         </div>
 
-        {{-- Filtro Tipo --}}
+        <!-- filtro de los tipos de vacaciones -->
         <div class="col-md-2">
             <label class="form-label small fw-bold text-muted">Categoría</label>
             <select name="idtipo" class="form-select">
@@ -41,7 +41,7 @@
             </select>
         </div>
 
-        {{-- Selección de Campo para Ordenar --}}
+        <!-- filtro para ordenar por diferentes cosas -->
         <div class="col-md-2">
             <label class="form-label small fw-bold text-muted">Ordenar por</label>
             <select name="campo" class="form-select">
@@ -55,7 +55,7 @@
             </select>
         </div>
 
-        {{-- Dirección de Orden --}}
+        <!-- direccion del filtrado -->
         <div class="col-md-2">
             <label class="form-label small fw-bold text-muted">Dirección</label>
             <select name="orden" class="form-select">
@@ -75,6 +75,7 @@
     </form>
 </div>
 
+<!-- todas las vacaciones -->
 <div class="container mt-4">
   <div class="row">
     @forelse($vacations as $vacation)
@@ -123,20 +124,13 @@
 
 @section('scripts')
   <script>
-      // Espera a que el documento HTML esté completamente cargado
       document.addEventListener('DOMContentLoaded', function () {
-          // Selecciona todos los botones que abren el modal de borrado
           const deleteButtons = document.querySelectorAll('[data-bs-target="#deleteModal"]');
-          // Selecciona el formulario que se usará para enviar la petición DELETE
           const formDelete = document.getElementById('form-delete');
 
-          // Recorre cada botón de "delete"
           deleteButtons.forEach(button => {
-              // Añade un listener para cuando se haga clic en él
               button.addEventListener('click', function () {
-                  // Cuando se hace clic, obtiene la URL guardada en el atributo 'data-href' del botón específico     
                   const action = this.getAttribute('data-href');
-                  // Asigna esa URL específica al atributo 'action' del formulario de borrado
                   formDelete.setAttribute('action', action);
               });
           });

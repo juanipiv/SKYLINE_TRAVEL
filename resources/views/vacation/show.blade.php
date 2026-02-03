@@ -1,8 +1,7 @@
 @extends('template.base')
 
 @section('content')
-
-{{-- Modal para borrar comentarios --}}
+ <!-- ventana modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
@@ -22,7 +21,6 @@
 </div>
 
 <div class="row">
-    {{-- Columna Izquierda: Imagen y Precio --}}
     <div class="col-lg-5 mb-4">
         <div class="card border-0 shadow-sm overflow-hidden">
             <img class="img-fluid" 
@@ -38,7 +36,6 @@
         </div>
     </div>
 
-    {{-- Columna Derecha: Información y Botón de Reserva --}}
     <div class="col-lg-7">
         <div class="ps-lg-4">
             <nav aria-label="breadcrumb">
@@ -63,15 +60,18 @@
             <h4 class="fw-bold">Sobre este viaje</h4>
             <p class="lead text-muted mb-4">{{ $vacation->descripcion }}</p>
 
-            {{-- BLOQUE DE RESERVA --}}
+            <!-- bloque para hacer la reserva -->
             <div class="card border-0 bg-light mb-4 shadow-sm" id="booking-section">
                 <div class="card-body p-4">
                     @auth
-                        @php $reserva = $vacation->reserva; @endphp
+                        <!-- variable que almacena la reserva del anuncio -->
+                        @php 
+                            $reserva = $vacation->reserva; 
+                        @endphp
 
                         @if(Auth::user()->hasVerifiedEmail())
-                            {{-- Caso: Usuario Verificado --}}
-                            @if(!$reserva)
+                            <!-- si el usuario tiene el correo verificado -->
+                            @if(!$reserva) <!-- y no hay reserva -->
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
                                         <h5 class="fw-bold mb-1 text-success">¡Disponible ahora!</h5>
@@ -86,7 +86,7 @@
                                     </form>
                                 </div>
                             @else
-                                @if($reserva->iduser == Auth::id())
+                                @if($reserva->iduser == Auth::id()) <!-- si hay reserva y es del usuario logueado -->
                                     <div class="d-flex align-items-center text-success">
                                         <i class="fa-solid fa-circle-check fs-2 me-3"></i>
                                         <div>
@@ -94,7 +94,7 @@
                                             <small>Este destino ya está en tu lista de próximos viajes.</small>
                                         </div>
                                     </div>
-                                @else
+                                @else <!-- en caso de que no sea asi, quiere decir que otra persona lo ha reservado -->
                                     <div class="d-flex align-items-center text-muted">
                                         <i class="fa-solid fa-lock fs-2 me-3"></i>
                                         <div>
@@ -106,7 +106,7 @@
                                 @endif
                             @endif
                         @else
-                            {{-- Caso: Usuario NO Verificado --}}
+                            <!-- en caso de que el usuario no tenga el email verificado -->
                             <div class="text-center py-2">
                                 <i class="fa-solid fa-envelope-open-text text-warning fs-3 mb-2"></i>
                                 <h6 class="fw-bold">Email no verificado</h6>
@@ -115,7 +115,7 @@
                             </div>
                         @endif
                     @else
-                        {{-- Caso: No Logueado --}}
+                        <!-- en caso de que el usuario no este logueado -->
                         <div class="text-center py-2">
                             <p class="mb-2 small">Inicia sesión para poder gestionar tu reserva.</p>
                             <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary px-4">Entrar a mi cuenta</a>
@@ -137,7 +137,7 @@
 
 <hr class="my-5">
 
-{{-- SECCIÓN DE COMENTARIOS --}}
+<!-- comentarios -->
 <div class="row justify-content-center pb-5">
     <div class="col-md-10">
         <div class="d-flex align-items-center mb-4">
@@ -145,7 +145,7 @@
             <span class="badge bg-primary ms-3">{{ $vacation->comentario->count() }}</span>
         </div>
 
-        {{-- Lista de Comentarios --}}
+        <!-- comentarios dentro del paquete -->
         @forelse($vacation->comentario as $comentario)
             <div class="card border-0 shadow-sm mb-3">
                 <div class="card-body p-4">
@@ -192,26 +192,26 @@
             </div>
         @endforelse
 
-        {{-- FORMULARIO PARA COMENTAR (Restringido a Reservas) --}}
+        <!-- formulario para comentar -->
         <div class="mt-5 p-4 bg-white rounded-4 shadow-sm border text-center">
             <h4 class="mb-4 fw-bold">Cuéntanos tu experiencia</h4>
 
             @auth
+                <!-- variable que almacena si el usuario que esta logueado es el que tiene la reserva a su nombre -->
                 @php
-                    // ¿El usuario logueado es el que ha reservado este viaje?
                     $usuarioHaReservado = ($vacation->reserva && $vacation->reserva->iduser == Auth::id());
                 @endphp
 
-                @if($usuarioHaReservado)
+                @if($usuarioHaReservado) <!-- si es el aparece el formulario --> 
                     @include('comentario.create')
-                @else
+                @else <!-- si no te aparece un mesaje indicando que no has reservado por lo que no puedes comentar -->
                     <div class="py-3">
                         <i class="fa-solid fa-comment-slash fs-2 text-muted mb-3"></i>
                         <h6 class="fw-bold">Opiniones exclusivas para viajeros</h6>
                         <p class="small text-muted mb-0">Solo los usuarios con una reserva confirmada en <strong>{{ $vacation->titulo }}</strong> pueden publicar comentarios.</p>
                     </div>
                 @endif
-            @else
+            @else <!-- si no se esta logueado no se puede comentar -->
                 <p class="small text-muted">Inicia sesión y reserva para poder comentar.</p>
                 <a href="{{ route('login') }}" class="btn btn-sm btn-primary px-4">Login</a>
             @endauth
@@ -219,7 +219,6 @@
     </div>
 </div>
 
-{{-- Formulario oculto para el DELETE --}}
 <form id="form-delete" action="" method="post" class="d-none">
     @csrf
     @method('DELETE')

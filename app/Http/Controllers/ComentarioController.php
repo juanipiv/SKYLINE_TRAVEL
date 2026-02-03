@@ -37,7 +37,6 @@ class ComentarioController extends Controller {
     }
 
     function edit(Comentario $comentario): View {
-        // Eliminamos Asignatura y Estudiante que no pertenecen aquí
         $vacation = $comentario->vacation; 
         return view('comentario.edit', [
             'comentario' => $comentario, 
@@ -52,18 +51,18 @@ class ComentarioController extends Controller {
     }
 
     public function store(Request $request) {
-        // 1. Validación de los datos del formulario
+        // breve validacion de los campos del formulario
         $request->validate([
             'content' => 'required|min:5|max:1000',
             'idvacation' => 'required|exists:vacation,id'
         ]);
 
-        // 2. Seguridad: ¿Tiene el correo verificado?
+        // comprobacion de si se tiene el email verificado
         if (!auth()->user()->hasVerifiedEmail()) {
             return back()->withErrors(['general' => 'Debes verificar tu correo para poder comentar.']);
         }
 
-        // 3. Seguridad: ¿Ha reservado este viaje específico?
+        // comprobacion de si se ha reservado este viaje en especifico
         $haReservado = Reserva::where('iduser', auth()->id())
                         ->where('idvacation', $request->idvacation)
                         ->exists();
@@ -72,14 +71,14 @@ class ComentarioController extends Controller {
             return back()->withErrors(['general' => 'Solo puedes comentar en viajes que hayas reservado previamente.']);
         }
 
-        // 4. Guardamos en la base de datos
+        // se guarda en la base de datos
         $comentario = new Comentario();
         $comentario->idvacation = $request->idvacation;
         $comentario->texto = $request->content;
         $comentario->iduser = auth()->id();
-        $comentario->save(); // <--- AQUÍ el comentario recibe su ID
+        $comentario->save();
 
-        // 5. Gestión de la sesión para edición/borrado rápido
+        // gestion de la sesion para edición/borrado rapido
         $sentComentario = session()->get('sentComentario', new SentComentario());
         $sentComentario->addComentario($comentario);
         session()->put('sentComentario', $sentComentario); 
@@ -88,22 +87,21 @@ class ComentarioController extends Controller {
     }
     
     public function update(Request $request, Comentario $comentario): RedirectResponse {
-        // 1. Validación de los datos
+        // validacion
         $request->validate([
             'texto' => 'required|string|min:5',
         ]);
 
-        // 2. Seguridad: Comprobar sesión (SentComentario) y Autoría
         $sentComentario = session()->get('sentComentario');
         
-        // Verificamos si existe el objeto en sesión y si el comentario es "editable"
+        // comprobacion de si existe el objeto en sesion y si el comentario es editable
         if (!$sentComentario || !$sentComentario->isComentario($comentario)) {
             return redirect()->route('main.index')->withErrors([
                 'general' => 'No puedes editar este comentario: la sesión ha expirado o no tienes permiso.'
             ]);
         }
 
-        // Doble check: solo el dueño puede editar (aunque esté en sesión)
+        // otra comprobacion de que el unico que puede editar el comentario es el usuario
         if ($comentario->iduser != auth()->id()) {
             return redirect()->route('main.index')->withErrors([
                 'general' => 'Acción no autorizada.'
@@ -112,7 +110,6 @@ class ComentarioController extends Controller {
 
         $result = false;
         try {
-            // Mapeamos los datos del request al modelo
             $comentario->texto = $request->texto;
 
             if ($comentario->isDirty()) { 
@@ -124,15 +121,12 @@ class ComentarioController extends Controller {
             }
             
         } catch(\Exception $e) {
-            // En producción es mejor loguear el error y no mostrar el dd($e)
-            \Log::error("Error editando comentario: " . $e->getMessage());
             $message = 'Se ha producido un error al intentar guardar los cambios.';
         }
 
         $messageArray = ['general' => $message];
 
         if ($result) {
-            // Redirigimos de vuelta a la ficha del destino de vacaciones
             return redirect()->route('vacation.show', $comentario->idvacation)->with($messageArray);
         } else {
             return back()->withInput()->withErrors($messageArray);

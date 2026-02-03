@@ -57,7 +57,9 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                
+                                <a href="{{ route('register') }}" class="btn btn-primary">
+                                    {{ __('Register') }}
+                                </a>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -65,10 +67,7 @@
                                     </a>
                                 @endif
                                 
-                                <a href="{{ route('register') }}" class="btn btn-primary">
-                        
-                                    {{ __('Register') }}
-                                </a>
+                                
                             </div>
                         </div>
                     </form>

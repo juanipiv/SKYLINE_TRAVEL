@@ -2,7 +2,6 @@
 
 @section('content')
 
-{{-- Modal de Confirmación --}}
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
@@ -23,7 +22,6 @@
 </div>
 
 <div class="container-fluid py-4">
-    {{-- Cabecera con estadísticas rápidas --}}
     <div class="d-flex justify-content-between align-items-end mb-4">
         <div>
             <h1 class="display-6 fw-bold text-primary mb-0">Gestión de Destinos</h1>
@@ -38,7 +36,7 @@
         @endauth
     </div>
 
-    {{-- Tabla Estilizada --}}
+    <!-- tabla con todos los destinos -->
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -127,13 +125,9 @@
         const deleteModal = document.getElementById('deleteModal');
         const formDelete = document.getElementById('form-delete');
 
-        // Escuchamos el evento de apertura del modal de Bootstrap
         deleteModal.addEventListener('show.bs.modal', function (event) {
-            // El botón que disparó el modal
             const button = event.relatedTarget;
-            // Extraemos la info de los atributos data-*
             const action = button.getAttribute('data-href');
-            // Actualizamos el action del form
             formDelete.setAttribute('action', action);
         });
     });

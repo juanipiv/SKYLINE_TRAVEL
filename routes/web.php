@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\VacationController;
 
@@ -16,7 +17,7 @@ Route::resource('comentario', ComentarioController::class);
 
 Auth::routes(['verify' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () { // para que solo los usarios logueados puedan reservar
     Route::post('/reserva', [ReservaController::class, 'store'])->name('reserva.store');

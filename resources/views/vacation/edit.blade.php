@@ -123,7 +123,6 @@
 
 @section('scripts')
 <script>
-    // Mantenemos tu lógica de JavaScript pero aplicada a los nuevos IDs y clases
     document.addEventListener('DOMContentLoaded', function () {
         const dropZone = document.getElementById('drop-zone');
         const inputFile = document.getElementById('image');

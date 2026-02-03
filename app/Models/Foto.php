@@ -19,11 +19,10 @@ class Foto extends Model
     }
 
     public function getPath() {
-        // Si el path empieza por http, es una imagen de internet
+        // para las imagenes de los seeders
         if (str_starts_with($this->path, 'http')) {
             return $this->path;
         }
-        // Si no, es una imagen local guardada en storage
         return asset('storage/' . $this->path);
     }
 }
